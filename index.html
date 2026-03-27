@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ResumeAI — Build Your Dream Resume</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ===== AUTH MODAL ===== -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-overlay" onclick="closeModal('authModal')"></div>
+  <div class="modal-box auth-box">
+    <button class="modal-close" onclick="closeModal('authModal')"><i class="fa fa-times"></i></button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <div id="loginForm" class="auth-form">
+      <h2>Welcome Back</h2>
+      <p class="auth-sub">Login to access your resumes & unlock free templates</p>
+      <input type="email" placeholder="Email address" id="loginEmail"/>
+      <input type="password" placeholder="Password" id="loginPassword"/>
+      <button class="btn-primary full" onclick="handleLogin()">Login</button>
+      <div class="auth-divider"><span>or continue with</span></div>
+      <button class="btn-social" onclick="handleGoogleLogin()"><i class="fab fa-google"></i> Google</button>
+    </div>
+    <div id="signupForm" class="auth-form hidden">
+      <h2>Create Account</h2>
+      <p class="auth-sub">Join free — get access to 50+ templates instantly</p>
+      <input type="text" placeholder="Full Name" id="signupName"/>
+      <input type="email" placeholder="Email address" id="signupEmail"/>
+      <input type="password" placeholder="Password (min 8 chars)" id="signupPassword"/>
+      <button class="btn-primary full" onclick="handleSignup()">Create Account</button>
+      <div class="auth-divider"><span>or continue with</span></div>
+      <button class="btn-social" onclick="handleGoogleLogin()"><i class="fab fa-google"></i> Google</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== UPGRADE MODAL ===== -->
+<div id="upgradeModal" class="modal hidden">
+  <div class="modal-overlay" onclick="closeModal('upgradeModal')"></div>
+  <div class="modal-box upgrade-box">
+    <button class="modal-close" onclick="closeModal('upgradeModal')"><i class="fa fa-times"></i></button>
+    <div class="upgrade-badge"><i class="fa fa-crown"></i> PREMIUM</div>
+    <h2>Unlock All Templates</h2>
+    <p>Get access to 100+ premium, ATS-optimized resume templates trusted by HR professionals worldwide.</p>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$9<span>/mo</span></div>
+        <ul>
+          <li><i class="fa fa-check"></i> All 100+ templates</li>
+          <li><i class="fa fa-check"></i> AI Resume Builder</li>
+          <li><i class="fa fa-check"></i> PDF Export</li>
+          <li><i class="fa fa-check"></i> Cover Letter AI</li>
+        </ul>
+        <button class="btn-primary full" onclick="handleUpgrade('monthly')">Get Monthly</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-badge">BEST VALUE</div>
+        <div class="plan-name">Yearly</div>
+        <div class="plan-price">$49<span>/yr</span></div>
+        <ul>
+          <li><i class="fa fa-check"></i> Everything in Monthly</li>
+          <li><i class="fa fa-check"></i> Priority AI Queue</li>
+          <li><i class="fa fa-check"></i> LinkedIn Optimizer</li>
+          <li><i class="fa fa-check"></i> 24/7 Support</li>
+        </ul>
+        <button class="btn-accent full" onclick="handleUpgrade('yearly')">Get Yearly — Save 55%</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Resume<span>AI</span></a>
+    <div class="nav-links desktop-only">
+      <a href="#templates">Templates</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <div id="navGuest" class="nav-guest">
+        <button class="btn-ghost" onclick="openModal('authModal')">Login</button>
+        <button class="btn-primary" onclick="openModal('authModal')">Get Started Free</button>
+      </div>
+      <div id="navUser" class="nav-user hidden">
+        <span id="navUserName" class="nav-username"></span>
+        <div class="user-avatar" id="navAvatar" onclick="toggleUserMenu()">A</div>
+        <div id="userMenu" class="user-menu hidden">
+          <a href="dashboard.html"><i class="fa fa-th-large"></i> Dashboard</a>
+          <a href="#" onclick="openModal('upgradeModal')"><i class="fa fa-crown"></i> Upgrade</a>
+          <a href="#" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+      <button class="hamburger" onclick="toggleMobileMenu()"><i class="fa fa-bars"></i></button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="#templates" onclick="toggleMobileMenu()">Templates</a>
+    <a href="#how-it-works" onclick="toggleMobileMenu()">How It Works</a>
+    <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+    <a href="#" onclick="openModal('authModal'); toggleMobileMenu()">Login / Sign Up</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag"><i class="fa fa-magic"></i> AI-Powered Resume Builder</div>
+    <h1>Resumes That <span class="gradient-text">Get You Hired</span></h1>
+    <p>Our AI analyzes 10,000+ HR-approved formats to craft a resume that gets past ATS filters and impresses hiring managers — in minutes.</p>
+    <div class="hero-actions">
+      <button class="btn-primary large" onclick="window.location.href='builder.html'"><i class="fa fa-magic"></i> Build My Resume with AI</button>
+      <button class="btn-ghost large" onclick="document.getElementById('templates').scrollIntoView({behavior:'smooth'})">Browse Templates</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>500K+</strong><span>Resumes Created</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong>94%</strong><span>Interview Rate</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong>100+</strong><span>Templates</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="floating-card card1"><i class="fa fa-check-circle"></i> ATS Score: 98%</div>
+    <div class="floating-card card2"><i class="fa fa-star"></i> HR Approved</div>
+    <div class="floating-card card3"><i class="fa fa-robot"></i> AI Enhanced</div>
+    <div class="resume-mockup">
+      <div class="mockup-header"></div>
+      <div class="mockup-line"></div>
+      <div class="mockup-line short"></div>
+      <div class="mockup-section"></div>
+      <div class="mockup-line"></div>
+      <div class="mockup-line medium"></div>
+      <div class="mockup-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how-it-works" id="how-it-works">
+  <div class="section-container">
+    <div class="section-tag">Simple Process</div>
+    <h2 class="section-title">From Zero to Hired in 3 Steps</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon"><i class="fa fa-robot"></i></div>
+        <h3>AI Asks You Questions</h3>
+        <p>Our smart AI asks targeted questions about your experience, skills, and goals — only what's relevant to your field.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon"><i class="fa fa-palette"></i></div>
+        <h3>Choose Your Template</h3>
+        <p>Pick from 100+ professionally designed templates — from minimalist to creative to executive.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon"><i class="fa fa-download"></i></div>
+        <h3>Download & Apply</h3>
+        <p>Export as a perfectly formatted PDF or share a live link with employers. Start applying instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEMPLATES SECTION ===== -->
+<section class="templates-section" id="templates">
+  <div class="section-container">
+    <div class="section-tag">Template Library</div>
+    <h2 class="section-title">100+ HR-Approved Templates</h2>
+    <p class="section-sub">Every template is crafted to pass ATS systems and impress human recruiters.</p>
+
+    <!-- Filter Tabs -->
+    <div class="template-filters">
+      <button class="filter-btn active" onclick="filterTemplates('all', this)">All</button>
+      <button class="filter-btn" onclick="filterTemplates('free', this)">Free</button>
+      <button class="filter-btn" onclick="filterTemplates('login', this)"><i class="fa fa-lock-open"></i> Login Required</button>
+      <button class="filter-btn" onclick="filterTemplates('premium', this)"><i class="fa fa-crown"></i> Premium</button>
+    </div>
+
+    <div class="templates-grid" id="templatesGrid">
+      <!-- Templates generated by JS -->
+    </div>
+    <div class="load-more">
+      <button class="btn-ghost" onclick="loadMoreTemplates()">Load More Templates <i class="fa fa-arrow-down"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features-section">
+  <div class="section-container">
+    <div class="section-tag">Why ResumeAI?</div>
+    <h2 class="section-title">Built for the Modern Job Market</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon ai"><i class="fa fa-brain"></i></div>
+        <h3>AI That Thinks Like HR</h3>
+        <p>Our AI is trained on thousands of accepted resumes across industries. It knows what works and what doesn't.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon ats"><i class="fa fa-shield-alt"></i></div>
+        <h3>ATS-Optimized</h3>
+        <p>98% of Fortune 500 companies use ATS. Our templates are built to pass every scanner.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon smart"><i class="fa fa-magic"></i></div>
+        <h3>Smart Suggestions</h3>
+        <p>Get real-time AI suggestions for better phrasing, stronger action verbs, and quantified achievements.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon multi"><i class="fa fa-layer-group"></i></div>
+        <h3>Multi-Industry</h3>
+        <p>Tech, Finance, Creative, Healthcare, Law — we have tailored templates and AI prompts for every industry.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing-section" id="pricing">
+  <div class="section-container">
+    <div class="section-tag">Pricing</div>
+    <h2 class="section-title">Start Free. Upgrade Anytime.</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">$0</div>
+        <ul class="price-features">
+          <li><i class="fa fa-check"></i> 5 Free Templates</li>
+          <li><i class="fa fa-check"></i> AI Resume Builder</li>
+          <li><i class="fa fa-check"></i> PDF Download</li>
+          <li class="disabled"><i class="fa fa-times"></i> Premium Templates</li>
+          <li class="disabled"><i class="fa fa-times"></i> Cover Letter AI</li>
+        </ul>
+        <button class="btn-ghost full" onclick="window.location.href='builder.html'">Start Free</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Login</div>
+        <div class="price-amount">Free <small>with account</small></div>
+        <ul class="price-features">
+          <li><i class="fa fa-check"></i> 50+ Templates</li>
+          <li><i class="fa fa-check"></i> AI Resume Builder</li>
+          <li><i class="fa fa-check"></i> PDF Download</li>
+          <li><i class="fa fa-check"></i> Save Resumes</li>
+          <li class="disabled"><i class="fa fa-times"></i> Premium Templates</li>
+        </ul>
+        <button class="btn-primary full" onclick="openModal('authModal')">Create Free Account</button>
+      </div>
+      <div class="price-card premium-card">
+        <div class="premium-badge"><i class="fa fa-crown"></i> BEST</div>
+        <div class="price-tier">Premium</div>
+        <div class="price-amount">$9<span>/mo</span></div>
+        <ul class="price-features">
+          <li><i class="fa fa-check"></i> 100+ Templates</li>
+          <li><i class="fa fa-check"></i> Advanced AI</li>
+          <li><i class="fa fa-check"></i> Cover Letter AI</li>
+          <li><i class="fa fa-check"></i> LinkedIn Optimizer</li>
+          <li><i class="fa fa-check"></i> Priority Support</li>
+        </ul>
+        <button class="btn-accent full" onclick="openModal('upgradeModal')">Upgrade to Premium</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>Your Next Job Is One Resume Away</h2>
+    <p>Join 500,000+ professionals who built their career with ResumeAI</p>
+    <button class="btn-accent large" onclick="window.location.href='builder.html'"><i class="fa fa-magic"></i> Build My Resume Now — It's Free</button>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <a class="nav-logo">Resume<span>AI</span></a>
+      <p>AI-powered resumes that get you hired.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="builder.html">Builder</a>
+        <a href="#templates">Templates</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 ResumeAI. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

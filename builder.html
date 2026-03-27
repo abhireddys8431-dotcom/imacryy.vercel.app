@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Builder — ResumeAI</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/builder.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="builder-page">
+
+<!-- Navbar -->
+<nav class="navbar compact">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Resume<span>AI</span></a>
+    <div class="builder-progress">
+      <div class="progress-steps" id="progressSteps">
+        <div class="prog-step active" data-step="0">Info</div>
+        <div class="prog-step" data-step="1">Experience</div>
+        <div class="prog-step" data-step="2">Skills</div>
+        <div class="prog-step" data-step="3">Template</div>
+        <div class="prog-step" data-step="4">Preview</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-ghost sm" onclick="saveDraft()"><i class="fa fa-save"></i> Save</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN BUILDER LAYOUT -->
+<main class="builder-main">
+
+  <!-- LEFT: AI Chat Panel -->
+  <aside class="ai-panel" id="aiPanel">
+    <div class="ai-panel-header">
+      <div class="ai-avatar"><i class="fa fa-robot"></i></div>
+      <div>
+        <h3>ResumeAI Assistant</h3>
+        <span class="ai-status"><i class="fa fa-circle"></i> Active</span>
+      </div>
+    </div>
+
+    <div class="ai-chat" id="aiChat">
+      <!-- Messages injected by JS -->
+    </div>
+
+    <div class="ai-input-row">
+      <textarea id="userInput" placeholder="Type your answer..." rows="2" onkeydown="handleEnter(event)"></textarea>
+      <button class="send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions" id="quickActions">
+      <!-- Dynamic quick reply buttons -->
+    </div>
+  </aside>
+
+  <!-- RIGHT: Resume Preview -->
+  <section class="preview-panel" id="previewPanel">
+    <div class="preview-toolbar">
+      <span class="preview-label">Live Preview</span>
+      <div class="preview-actions">
+        <button class="btn-ghost sm" onclick="zoomOut()"><i class="fa fa-search-minus"></i></button>
+        <span id="zoomLevel">100%</span>
+        <button class="btn-ghost sm" onclick="zoomIn()"><i class="fa fa-search-plus"></i></button>
+        <button class="btn-primary sm" onclick="exportPDF()"><i class="fa fa-download"></i> Export PDF</button>
+      </div>
+    </div>
+
+    <div class="resume-preview-wrap" id="resumePreviewWrap">
+      <div class="resume-preview" id="resumePreview">
+        <!-- Resume content rendered by JS -->
+        <div class="empty-state">
+          <i class="fa fa-robot"></i>
+          <p>Answer the AI questions to start building your resume</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Selector (shown at step 3) -->
+    <div class="template-quick-select hidden" id="templateQuickSelect">
+      <h4>Choose a Template</h4>
+      <div class="mini-templates" id="miniTemplates"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Mobile Toggle -->
+<div class="mobile-toggle">
+  <button class="toggle-btn active" onclick="showPanel('ai')"><i class="fa fa-robot"></i> AI Chat</button>
+  <button class="toggle-btn" onclick="showPanel('preview')"><i class="fa fa-eye"></i> Preview</button>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/builder.js"></script>
+</body>
+</html>

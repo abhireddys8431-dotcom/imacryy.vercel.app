@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — ResumeAI</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Resume<span>AI</span></a>
+    <div class="nav-actions">
+      <div id="navUser" class="nav-user">
+        <span id="navUserName" class="nav-username"></span>
+        <div class="user-avatar" id="navAvatar" onclick="toggleUserMenu()">A</div>
+        <div id="userMenu" class="user-menu hidden">
+          <a href="dashboard.html"><i class="fa fa-th-large"></i> Dashboard</a>
+          <a href="#" onclick="openModal('upgradeModal')"><i class="fa fa-crown"></i> Upgrade</a>
+          <a href="#" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Upgrade Modal -->
+<div id="upgradeModal" class="modal hidden">
+  <div class="modal-overlay" onclick="closeModal('upgradeModal')"></div>
+  <div class="modal-box upgrade-box">
+    <button class="modal-close" onclick="closeModal('upgradeModal')"><i class="fa fa-times"></i></button>
+    <div class="upgrade-badge"><i class="fa fa-crown"></i> PREMIUM</div>
+    <h2>Unlock All Templates</h2>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$9<span>/mo</span></div>
+        <button class="btn-primary full" onclick="handleUpgrade('monthly')">Get Monthly</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-badge">BEST VALUE</div>
+        <div class="plan-name">Yearly</div>
+        <div class="plan-price">$49<span>/yr</span></div>
+        <button class="btn-accent full" onclick="handleUpgrade('yearly')">Get Yearly</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <aside class="dash-sidebar">
+    <nav class="dash-nav">
+      <a class="dash-nav-item active" href="dashboard.html"><i class="fa fa-th-large"></i> My Resumes</a>
+      <a class="dash-nav-item" href="builder.html"><i class="fa fa-plus-circle"></i> New Resume</a>
+      <a class="dash-nav-item" href="index.html#templates"><i class="fa fa-palette"></i> Templates</a>
+      <a class="dash-nav-item" href="#" onclick="openModal('upgradeModal')"><i class="fa fa-crown"></i> Upgrade</a>
+      <a class="dash-nav-item" href="#" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    </nav>
+    <div class="dash-plan" id="dashPlan">
+      <div class="plan-label">Free Plan</div>
+      <p>Upgrade to unlock all templates</p>
+      <button class="btn-accent full sm" onclick="openModal('upgradeModal')"><i class="fa fa-crown"></i> Upgrade</button>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-header">
+      <div>
+        <h1 id="dashWelcome">Welcome back!</h1>
+        <p>Manage your resumes and create new ones.</p>
+      </div>
+      <button class="btn-primary" onclick="window.location.href='builder.html'"><i class="fa fa-plus"></i> New Resume</button>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="dash-stats">
+      <div class="stat-box">
+        <i class="fa fa-file-alt"></i>
+        <div><strong id="statResumes">0</strong><span>Resumes</span></div>
+      </div>
+      <div class="stat-box">
+        <i class="fa fa-download"></i>
+        <div><strong id="statDownloads">0</strong><span>Downloads</span></div>
+      </div>
+      <div class="stat-box">
+        <i class="fa fa-eye"></i>
+        <div><strong id="statViews">0</strong><span>Views</span></div>
+      </div>
+    </div>
+
+    <!-- Resumes Grid -->
+    <div class="dash-section">
+      <h2>My Resumes</h2>
+      <div class="resumes-grid" id="resumesGrid">
+        <div class="resume-card new-card" onclick="window.location.href='builder.html'">
+          <i class="fa fa-plus-circle"></i>
+          <span>Create New Resume</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
